@@ -1,0 +1,17 @@
+<package>
+  <description brief="Calculates forward kinematics of a robot and creates frame transformations">
+  
+  </description>
+  <author>Malte Wirkus/malte.wirkus@dfki.de</author>
+  <license></license>
+  <url>http://</url>
+  <logo>http://</logo>
+  <depend package="base/cmake" />
+  <!--
+   To add any dependencies use the depend tag
+  <depend package="dummy-dependency-0" />
+	...
+  <depend package="dummy-dependency-n-1" />
+  <depend package="dummy-dependency-n" />
+  -->
+</package>
