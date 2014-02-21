@@ -90,10 +90,11 @@ public:
      *
      * \return true on success, false otherwise
      */
-    bool get_all_transforms(std::vector<base::samples::RigidBodyState>& transforms);
+    bool get_all_transforms(std::vector<base::samples::RigidBodyState>& transforms, bool keep_content=false);
     bool get_transform_by_joint_name(const std::string& j_name, base::samples::RigidBodyState& transform);
 
-    bool get_all_static_transforms(std::vector<base::samples::RigidBodyState>& transforms);
+    bool get_moving_joints_transforms(std::vector<base::samples::RigidBodyState>& transforms, bool keep_content=false);
+    bool get_static_joints_transforms(std::vector<base::samples::RigidBodyState>& transforms, bool keep_content=false);
 
     /**
      * \return true, when segment is known from robot model file, false when not.
@@ -129,12 +130,20 @@ public:
         return extract_values(joint_name2seg_name_);
     }
 
-    inline std::vector<std::string> get_all_static_segment_names(){
+    inline std::vector<std::string> get_static_segment_names(){
         return static_segment_names_;
     }
 
+    inline const std::vector<std::string>& get_moving_joint_names(){
+        return moving_joint_names_;
+    }
+
+    inline const std::vector<std::string>& get_static_joint_names(){
+        return static_joint_names_;
+    }
+
     inline const std::vector<std::string>& get_all_joint_names(){
-        return joint_names_;
+        return all_joint_names_;
     }
 
     inline const KDL::Segment& get_segment_by_joint(const KDL::Joint joint){
@@ -143,7 +152,12 @@ public:
     }
 
     inline const std::string& get_parent_name_by_segment_name(std::string seg_name){
-        return get_tree_element(seg_name).parent->second.segment.getName();
+        std::string root_name = kdl_tree_.getRootSegment()->first;
+        if(seg_name == root_name)
+            return "";
+
+        KDL::TreeElement elem = get_tree_element(seg_name);
+        return elem.parent->second.segment.getName();
     }
 
 
@@ -161,16 +175,19 @@ public:
     protected:
     inline void clear_all(){
         static_segment_names_.clear();
-        transforms_.clear();
-        joint_names_.clear();
+        moving_joints_transforms_.clear();
+        moving_joint_names_.clear();
+        static_joint_names_.clear();
         joint_name2seg_name_.clear();
         is_initialized_=false;
         init_blacklist();
     }
 
-    std::map<std::string, base::samples::RigidBodyState> transforms_;
-    std::vector<base::samples::RigidBodyState> static_transforms_;
-    std::vector<std::string> joint_names_;
+    std::map<std::string, base::samples::RigidBodyState> moving_joints_transforms_;
+    std::map<std::string, base::samples::RigidBodyState> static_joints_transforms_;
+    std::vector<std::string> moving_joint_names_;
+    std::vector<std::string> static_joint_names_;
+    std::vector<std::string> all_joint_names_;
     std::vector<std::string> static_segment_names_;
     std::vector<std::string> blacklist_;
     std::map<std::string, std::string> joint_name2seg_name_;
