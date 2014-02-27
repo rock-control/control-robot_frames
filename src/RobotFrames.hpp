@@ -66,7 +66,7 @@ public:
      * \param filepath : Path to the robot model definition file
      * \return nothing
      */
-    void load_robot_model(std::string filepath);
+    void load_robot_model(std::string filepath, bool init_invalid=true);
 
     bool is_valid_joint_name(std::string j_name);
     bool is_valid_joint_type(const KDL::Joint& joint);

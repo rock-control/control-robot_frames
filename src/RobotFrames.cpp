@@ -40,7 +40,7 @@ bool TransformationCalculator::knownJoint(const std::string& j_name)
 }
 
 
-void TransformationCalculator::load_robot_model(std::string filepath){
+void TransformationCalculator::load_robot_model(std::string filepath, bool init_invalid){
     clear_all();
 
     bool success=false;
@@ -89,13 +89,17 @@ void TransformationCalculator::load_robot_model(std::string filepath){
     }
     //link_names_ = extract_keys(map);
 
-    //Populate transforms map with invalid transforms
+    //Populate transforms map with identity transforms
     for(std::vector<std::string>::iterator it = moving_joint_names_.begin();
         it != moving_joint_names_.end(); ++it)
     {
         std::string j_name = *it;
         std::string seg_name = joint_name2seg_name_[j_name];
         moving_joints_transforms_[j_name] = base::samples::RigidBodyState(true);
+        if(!init_invalid){
+            //initUnknow sets trasform to identity. If we donÄt want invalidating, set to identity.
+            moving_joints_transforms_[j_name].initUnknown();
+        }
         moving_joints_transforms_[j_name].sourceFrame = get_tree_element(seg_name).parent->second.segment.getName();
         moving_joints_transforms_[j_name].targetFrame = seg_name;
     }
