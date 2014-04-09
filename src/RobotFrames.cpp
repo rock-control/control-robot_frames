@@ -100,8 +100,8 @@ void TransformationCalculator::load_robot_model(std::string filepath, bool init_
             //initUnknow sets trasform to identity. If we donÄt want invalidating, set to identity.
             moving_joints_transforms_[j_name].initUnknown();
         }
-        moving_joints_transforms_[j_name].sourceFrame = get_tree_element(seg_name).parent->second.segment.getName();
-        moving_joints_transforms_[j_name].targetFrame = seg_name;
+        moving_joints_transforms_[j_name].sourceFrame = seg_name;
+        moving_joints_transforms_[j_name].targetFrame = get_tree_element(seg_name).parent->second.segment.getName();
     }
 
     //Populate static transforms vector
