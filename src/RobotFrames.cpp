@@ -58,8 +58,12 @@ void TransformationCalculator::load_robot_model(std::string filepath, bool init_
     KDL::Joint joint;
     KDL::Segment segment;
     for(KDL::SegmentMap::const_iterator it = map.begin(); it!=map.end(); ++it){
+#ifdef KDL_USE_NEW_TREE_INTERFACE
+        segment = it->second->segment;
+#else
         segment = it->second.segment;
-        joint = it->second.segment.getJoint();
+#endif
+        joint = segment.getJoint();
         std::string j_name = joint.getName();
 
         if(j_name == "NoName" || j_name == ""){
@@ -101,7 +105,11 @@ void TransformationCalculator::load_robot_model(std::string filepath, bool init_
             moving_joints_transforms_[j_name].initUnknown();
         }
         moving_joints_transforms_[j_name].sourceFrame = seg_name;
+#ifdef KDL_USE_NEW_TREE_INTERFACE
+        moving_joints_transforms_[j_name].targetFrame = get_tree_element(seg_name).parent->second->segment.getName();
+#else
         moving_joints_transforms_[j_name].targetFrame = get_tree_element(seg_name).parent->second.segment.getName();
+#endif
     }
 
     //Populate static transforms vector
@@ -116,7 +124,11 @@ void TransformationCalculator::load_robot_model(std::string filepath, bool init_
         if(tree_elem.segment.getName() == kdl_tree_.getRootSegment()->first){
             continue;
         }
+#ifdef KDL_USE_NEW_TREE_INTERFACE
+        rbs.sourceFrame = tree_elem.parent->second->segment.getName();
+#else
         rbs.sourceFrame = tree_elem.parent->second.segment.getName();
+#endif
         rbs.targetFrame = tree_elem.segment.getName();
         static_joints_transforms_[j_name] = rbs;
     }

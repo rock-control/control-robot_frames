@@ -111,7 +111,11 @@ public:
         if(elem == kdl_tree_.getSegments().end())
             throw(std::runtime_error(segment_name));
 
+#ifdef KDL_USE_NEW_TREE_INTERFACE
+        return *(elem->second.get());
+#else
         return elem->second;
+#endif
     }
 
     inline const KDL::Segment& get_segment_by_segment_name(const std::string& segment_name){
@@ -157,7 +161,11 @@ public:
             return "";
 
         KDL::TreeElement elem = get_tree_element(seg_name);
+#ifdef KDL_USE_NEW_TREE_INTERFACE
+        return elem.parent->second->segment.getName();
+#else
         return elem.parent->second.segment.getName();
+#endif
     }
 
 
