@@ -70,7 +70,7 @@ void TransformationCalculator::load_robot_model(std::string filepath, bool init_
             if(segment.getName() != root_name){
                 LOG_ERROR("Segment %s has an unnamed joint. This is not okay, but will skip it for now.", segment.getName().c_str());
             }
-            LOG_DEBUG("Skipping NonName joint of root segment");
+            LOG_DEBUG("Skipping NoName joint of root segment");
             continue;
         }
 
@@ -101,7 +101,7 @@ void TransformationCalculator::load_robot_model(std::string filepath, bool init_
         std::string seg_name = joint_name2seg_name_[j_name];
         moving_joints_transforms_[j_name] = base::samples::RigidBodyState(true);
         if(!init_invalid){
-            //initUnknow sets trasform to identity. If we donÄt want invalidating, set to identity.
+            //initUnknown sets transform to identity. If we don't want invalidating, set to identity.
             moving_joints_transforms_[j_name].initUnknown();
         }
         moving_joints_transforms_[j_name].sourceFrame = seg_name;
@@ -158,7 +158,7 @@ void TransformationCalculator::clear_blacklist()
 void TransformationCalculator::add_to_blacklist(std::string j_name)
 {
     if(std::find(blacklist_.begin(), blacklist_.end(), j_name) != blacklist_.end()){
-        LOG_INFO("Joint %s was already added to blacklist ealier.", j_name.c_str());
+        LOG_INFO("Joint %s was already added to blacklist earlier.", j_name.c_str());
         return;
     }
     blacklist_.push_back(j_name);
@@ -196,7 +196,7 @@ void TransformationCalculator::update(const base::samples::Joints& joints)
             //Convert transform to eigen
             transform_it = moving_joints_transforms_.find(j_name);
             if(transform_it == moving_joints_transforms_.end())
-                throw("Unknown frame name. Should be thrown at this point, but ealier in get_segment.");
+                throw("Unknown frame name. Should not be thrown at this point, but earlier in get_segment.");
 
             convert(kdl_pose, transform_it->second);
 
@@ -254,7 +254,7 @@ bool TransformationCalculator::get_transform_by_joint_name(const std::string& j_
         return true;
     }
 
-    LOG_ERROR("Ciulod not find transform for joint %s", j_name.c_str());
+    LOG_ERROR("Could not find transform for joint %s", j_name.c_str());
     transform.invalidate();
     return false;
 }
