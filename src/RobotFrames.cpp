@@ -223,7 +223,7 @@ bool TransformationCalculator::get_moving_joints_transforms(std::vector<base::sa
 {
     if(!keep_content)
         transforms.clear();
-    std::vector<base::samples::RigidBodyState> v = extract_values(static_joints_transforms_);
+    std::vector<base::samples::RigidBodyState> v = extract_values(moving_joints_transforms_);
     transforms.insert(transforms.end(), v.begin(), v.end());
     return true;
 }
