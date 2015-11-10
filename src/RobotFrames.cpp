@@ -125,11 +125,11 @@ void TransformationCalculator::load_robot_model(std::string filepath, bool init_
             continue;
         }
 #ifdef KDL_USE_NEW_TREE_INTERFACE
-        rbs.sourceFrame = tree_elem.parent->second->segment.getName();
+        rbs.targetFrame = tree_elem.parent->second->segment.getName();
 #else
-        rbs.sourceFrame = tree_elem.parent->second.segment.getName();
+        rbs.targetFrame = tree_elem.parent->second.segment.getName();
 #endif
-        rbs.targetFrame = tree_elem.segment.getName();
+        rbs.sourceFrame = tree_elem.segment.getName();
         static_joints_transforms_[j_name] = rbs;
     }
 
