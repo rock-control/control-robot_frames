@@ -155,7 +155,7 @@ public:
                     get_segment_name_from_joint_name(joint.getName()));
     }
 
-    inline const std::string& get_parent_name_by_segment_name(std::string seg_name){
+    inline const std::string get_parent_name_by_segment_name(std::string seg_name){
         std::string root_name = kdl_tree_.getRootSegment()->first;
         if(seg_name == root_name)
             return "";
