@@ -102,6 +102,12 @@ public:
     bool knownJoint(const std::string& link_name);
 
     /**
+     * If set to true, only moving joint transformation, that
+     * have been set are returned by get_transform_by_joint_name.
+     * */
+    bool output_only_valid(bool arg);
+    
+    /**
      * Retrieve segment by name.
      * \throws exception when segment is not known
      * \return reference to segment
@@ -201,6 +207,7 @@ public:
     std::map<std::string, std::string> joint_name2seg_name_;
     KDL::Tree kdl_tree_;
     bool is_initialized_;
+    bool output_only_valid_;
 };
 
 } // end namespace robot_frame_transformations

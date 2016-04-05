@@ -7,8 +7,13 @@
 namespace robot_frames
 {
 
-TransformationCalculator::TransformationCalculator(){
+TransformationCalculator::TransformationCalculator() : output_only_valid_(false) {
     init_blacklist();
+}
+
+bool TransformationCalculator::output_only_valid(bool arg)
+{
+    output_only_valid_ = arg;
 }
 
 bool TransformationCalculator::is_valid_joint_name(std::string j_name){
@@ -244,6 +249,9 @@ bool TransformationCalculator::get_transform_by_joint_name(const std::string& j_
 
     moving_joints_transform_it = moving_joints_transforms_.find(j_name);
     if(moving_joints_transform_it != moving_joints_transforms_.end()){
+        if(output_only_valid_ && moving_joints_transform_it->second.time.isNull())
+            return false;
+
         transform =  moving_joints_transform_it->second;
         return true;
     }
