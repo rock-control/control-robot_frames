@@ -1,7 +1,7 @@
 #include "RobotFrames.hpp"
 #include <kdl_parser/kdl_parser.hpp>
 #include <algorithm>
-#include <base/Logging.hpp>
+#include <base-logging/Logging.hpp>
 #include <kdl/frames_io.hpp>
 
 namespace robot_frames
