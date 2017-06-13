@@ -11,7 +11,7 @@ TransformationCalculator::TransformationCalculator() : output_only_valid_(false)
     init_blacklist();
 }
 
-bool TransformationCalculator::output_only_valid(bool arg)
+void TransformationCalculator::output_only_valid(bool arg)
 {
     output_only_valid_ = arg;
 }

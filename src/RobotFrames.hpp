@@ -105,7 +105,7 @@ public:
      * If set to true, only moving joint transformation, that
      * have been set are returned by get_transform_by_joint_name.
      * */
-    bool output_only_valid(bool arg);
+    void output_only_valid(bool arg);
     
     /**
      * Retrieve segment by name.
