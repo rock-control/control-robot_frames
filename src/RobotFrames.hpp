@@ -8,6 +8,7 @@
 #include "base/samples/Joints.hpp"
 #include "base/samples/RigidBodyState.hpp"
 #include "kdl/tree.hpp"
+#include "robot_framesTypes.hpp"
 
 template<typename F,typename T>
 inline std::vector<F> extract_keys(std::map<F,T> m){
@@ -210,6 +211,48 @@ public:
     bool output_only_valid_;
 };
 
+class ChainTransformationCalculator{
+
+protected:
+    std::vector<robot_frames::Chain> Chains_;
+    std::string urdf_file_; 
+    base::samples::Joints joint_state_;
+
+    // variables from the orogen-component to mimic the functionality 
+    std::vector<KDL::Chain> chains_;
+    std::vector<std::string> chain_names_;
+    std::vector<KDL::ChainFkSolverPos_recursive*> pos_solvers_;
+    std::vector<KDL::Frame> kdl_frames_;
+    std::vector<base::samples::RigidBodyState> bt_frames_;
+    std::vector<KDL::JntArray> joint_arrays_;
+    std::vector<std::vector<std::string> >involved_active_joints_;
+    KDL::Tree tree_;
+    int n_defined_chains_;
+
+public:
+
+    void initilize(std::vector<robot_frames::Chain> chain, std::string urdf, base::samples::Joints jointstate);
+    
+    void clear_and_resize_vectors();
+    void unpack_joints(const base::samples::Joints& joint_state,
+                        const std::vector<std::string>& involved_joints,
+                        KDL::JntArray& joint_array);
+
+    /* Mimics the functionality of ConfigureHook of control-orogon-robot_frames 
+       Configure the parameters needed to calculate the transformations in the given chain
+    */
+    void configure();
+
+    /* Mimics the functionality of UpdateHook of control-orogon-robot_frames
+    */
+    void update(base::samples::Joints joint_state_, 
+                std::vector<base::samples::RigidBodyState> bt_frames_);
+    
+
+}
+
 } // end namespace robot_frame_transformations
+
+
 
 #endif // _ROBOTFRAMETRANSFORMATIONS_ROBOTFRAMETRANSFORMATIONS_HPP_
