@@ -10,7 +10,6 @@
 #include "kdl/tree.hpp"
 #include "robot_frames/robot_framesTypes.hpp"
 
-#include <kdl/chainfksolvervel_recursive.hpp>
 #include <kdl/chainfksolverpos_recursive.hpp>
 #include <kdl/jntarray.hpp>
 

@@ -311,7 +311,7 @@ ChainTransformationCalculator::ChainTransformationCalculator(const std::vector<r
         chain_names_[i] = name;
     }
 
-    //Determine invloved joits, prepare frames storage and solvers
+    //Determine invloved joints, prepare frames storage and solvers
     for(size_t i=0; i<n_defined_chains_; i++){
         KDL::Chain chain = chains_[i];
         //Determine involved joints for each chain
